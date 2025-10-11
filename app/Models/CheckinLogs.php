@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CheckinLogs extends Model
+{
+    use HasFactory, HasUuids;
+
+    protected $table = 'checkin_logs';
+
+    protected $fillable = [
+        'user_id',
+        'point_qr_id',
+        'waktu_checkin',
+        'foto_bukti',
+        'latitude',
+        'longitude',
+    ];
+
+    protected $casts = [
+        'waktu_checkin' => 'datetime',
+    ];
+}
