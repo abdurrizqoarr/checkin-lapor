@@ -8,13 +8,59 @@ use App\Models\PointQr;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PointController extends Controller
 {
-    public function checkinPage($id)
+    public static function encryptId($id)
     {
-        $detailPoint = PointQr::find($id);
+        return urlencode(Crypt::encryptString($id));
+    }
+
+    public static function decryptId($encryptedId)
+    {
+        try {
+            return Crypt::decryptString(urldecode($encryptedId));
+        } catch (\Exception $e) {
+            abort(404, 'ID tidak valid atau rusak.');
+        }
+    }
+
+    public function generateLinkDanQr($id)
+    {
+        $point = PointQr::findOrFail($id);
+
+        // Enkripsi ID
+        $encryptedId = $this->encryptId($point->id);
+
+        // Buat URL check-in
+        $url = route('point.checkin', ['id' => $encryptedId]);
+
+        // Buat QR Code dari URL tersebut (opsional: base64 untuk langsung tampil di blade)
+        // $qrCode = base64_encode(QrCode::format('png')->size(250)->generate($url));
+
+        // return view('generateQrPage', [
+        //     'point' => $point,
+        //     'url' => $url,
+        //     'qrCode' => $qrCode,
+        // ]);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'point' => $point,
+                'url' => $url,
+                // 'qrCode' => $qrCode, // Jika ingin mengirim QR Code juga
+            ],
+        ]);
+    }
+
+
+    public function checkinPage($encryptedId)
+    {
+        $id = $this->decryptId($encryptedId);
+        $detailPoint = PointQr::findOrFail($id);
 
         return view('checkinPage', ['detailPoint' => $detailPoint]);
     }
