@@ -20,9 +20,9 @@ class JadwalUser extends Model
     /**
      * Relasi ke model User
      */
-    public function user()
+    public function jadwal()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**

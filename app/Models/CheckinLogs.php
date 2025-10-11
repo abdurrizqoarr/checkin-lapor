@@ -24,4 +24,9 @@ class CheckinLogs extends Model
     protected $casts = [
         'waktu_checkin' => 'datetime',
     ];
+
+    public function pointQr()
+    {
+        return $this->belongsTo(PointQr::class, 'point_qr_id');
+    }
 }
