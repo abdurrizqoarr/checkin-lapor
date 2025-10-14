@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dashboard</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -12,16 +13,16 @@
     <div class="min-h-screen flex flex-col">
         <!-- Header -->
         <header class="bg-white shadow-sm sticky top-0 z-10">
-            <div class="max-w-md mx-auto py-4 px-5 flex flex-col gap-1 text-center">
-                <p class="text-sm text-gray-500">{{ $hariIndo }}, {{ now()->format('d F Y') }}</p>
-                <p class="text-base mt-1 font-medium text-gray-700">
+            <div class="max-w-lg mx-auto py-4 px-5 flex flex-col gap-1 text-center">
+                <p class="text-gray-500">{{ $hariIndo }}, {{ now()->format('d F Y') }}</p>
+                <p class="text-lg mt-1 font-medium text-gray-700">
                     Halo, <span class="text-sky-600 font-semibold">{{ $dataUser->name }}</span> 👋
                 </p>
             </div>
         </header>
 
         <!-- Main -->
-        <main class="flex-1 w-full max-w-md mx-auto px-4 py-6">
+        <main class="flex-1 w-full max-w-lg mx-auto px-4 py-6">
             <div x-data="{ tab: 'riwayat' }" class="space-y-6">
                 <!-- Tabs -->
                 <div class="flex justify-center bg-white rounded-full p-1 shadow-sm">

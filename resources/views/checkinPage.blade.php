@@ -11,7 +11,7 @@
 
 <body class="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-50 to-sky-200">
 
-    <div class="w-full max-w-sm mx-auto p-6">
+    <div class="w-full max-w-md mx-auto p-6">
         <!-- Kartu Utama -->
         <div class="bg-white/80 backdrop-blur-sm shadow-lg rounded-2xl p-6 border border-sky-100">
             <!-- Nama Point -->
@@ -35,7 +35,7 @@
 
                 <div>
                     <label for="password" class="block text-sky-700 text-sm font-medium mb-1">Password</label>
-                    <input type="password" name="password" id="password" autocomplete="new-password"
+                    <input type="password" name="password" id="password" autocomplete="off"
                         class="w-full px-4 py-2 rounded-xl border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 text-gray-700 placeholder-sky-300"
                         placeholder="Masukkan password" required>
                 </div>

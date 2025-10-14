@@ -10,7 +10,7 @@
 
 <body class="bg-sky-50 min-h-screen flex items-center justify-center">
 
-    <div class="w-full max-w-sm bg-white rounded-2xl shadow-lg p-6 mx-4">
+    <div class="w-full max-w-lg bg-white rounded-2xl shadow-lg p-6 mx-4">
         <div class="text-center mb-6">
             <h1 class="text-2xl font-bold text-sky-700">Selamat Datang</h1>
             <p class="text-sky-500 text-sm mt-1">Masuk untuk melanjutkan ke beranda</p>
@@ -21,14 +21,19 @@
 
             <div>
                 <label for="username" class="block text-sky-700 text-sm font-medium mb-1">Username</label>
-                <input type="text" name="username" id="username" autocomplete="off"
+                <input type="text" name="username" id="username" autocomplete="off" value="{{ old('username') }}"
                     class="w-full px-4 py-2 rounded-xl border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 text-gray-700 placeholder-sky-300"
                     placeholder="Masukkan username" required>
+
+                {{-- Pesan error untuk username --}}
+                @error('username')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>
                 <label for="password" class="block text-sky-700 text-sm font-medium mb-1">Password</label>
-                <input type="password" name="password" id="password" autocomplete="new-password"
+                <input type="password" name="password" id="password" autocomplete="off"
                     class="w-full px-4 py-2 rounded-xl border border-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-sky-400 text-gray-700 placeholder-sky-300"
                     placeholder="Masukkan password" required>
             </div>

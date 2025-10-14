@@ -41,9 +41,6 @@
                 class="w-64 h-64 border border-gray-200 shadow rounded-lg">
         </div>
 
-        <!-- URL kecil di bawah -->
-        <p class="text-xs text-gray-500 break-all">{{ $url }}</p>
-
         <!-- Tombol cetak -->
         <button onclick="window.print()"
             class="no-print mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
