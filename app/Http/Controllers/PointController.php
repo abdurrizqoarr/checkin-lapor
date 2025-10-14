@@ -30,30 +30,32 @@ class PointController extends Controller
 
     public function generateLinkDanQr($id)
     {
-        $point = PointQr::findOrFail($id);
+        try {
+            $point = PointQr::findOrFail($id);
 
-        // Enkripsi ID
-        $encryptedId = $this->encryptId($point->id);
+            // Enkripsi ID
+            $encryptedId = $this->encryptId($point->id);
 
-        // Buat URL check-in
-        $url = route('point.checkin', ['id' => $encryptedId]);
+            // Buat URL check-in
+            $url = route('point.checkin', ['id' => $encryptedId]);
 
-        // Buat QR Code dari URL tersebut (opsional: base64 untuk langsung tampil di blade)
-        // $qrCode = base64_encode(QrCode::format('png')->size(250)->generate($url));
+            // Buat QR Code dari URL tersebut (base64)
+            $qrCode = base64_encode(QrCode::format('png')->size(250)->generate($url));
 
-        // return view('generateQrPage', [
-        //     'point' => $point,
-        //     'url' => $url,
-        //     'qrCode' => $qrCode,
-        // ]);
-        return response()->json([
-            'success' => true,
-            'data' => [
+            return view('generateQrPage', [
                 'point' => $point,
                 'url' => $url,
-                // 'qrCode' => $qrCode, // Jika ingin mengirim QR Code juga
-            ],
-        ]);
+                'qrCode' => $qrCode,
+            ]);
+
+        } catch (\Exception $e) {
+            // Log error agar bisa dicek di log file
+            \Log::error('Generate QR code failed: ' . $e->getMessage());
+
+            return view('errorQrPage', [
+                'err_message' => $e->getMessage()
+            ]);
+        }
     }
 
 
