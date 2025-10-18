@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class PointController extends Controller
@@ -50,7 +51,7 @@ class PointController extends Controller
 
         } catch (\Exception $e) {
             // Log error agar bisa dicek di log file
-            \Log::error('Generate QR code failed: ' . $e->getMessage());
+            Log::error('Generate QR code failed: ' . $e->getMessage());
 
             return view('errorQrPage', [
                 'err_message' => $e->getMessage()
@@ -61,8 +62,8 @@ class PointController extends Controller
 
     public function checkinPage($encryptedId)
     {
-        $id = $this->decryptId($encryptedId);
-        $detailPoint = PointQr::findOrFail($id);
+        // $id = $this->decryptId($encryptedId);
+        $detailPoint = PointQr::findOrFail($encryptedId);
 
         return view('checkinPage', ['detailPoint' => $detailPoint]);
     }
