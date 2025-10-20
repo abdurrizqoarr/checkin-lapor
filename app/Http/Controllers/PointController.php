@@ -62,8 +62,8 @@ class PointController extends Controller
 
     public function checkinPage($encryptedId)
     {
-        // $id = $this->decryptId($encryptedId);
-        $detailPoint = PointQr::findOrFail($encryptedId);
+        $id = $this->decryptId($encryptedId);
+        $detailPoint = PointQr::findOrFail($id);
 
         return view('checkinPage', ['detailPoint' => $detailPoint]);
     }
@@ -100,6 +100,7 @@ class PointController extends Controller
                 'point_qr_id' => 'required|exists:point_qr,id',
                 'latitude' => 'required|numeric|between:-90,90',
                 'longitude' => 'required|numeric|between:-180,180',
+                'foto_bukti' => 'required|string|regex:/^data:image\/(png|jpeg|jpg);base64,/',
             ]);
 
             // Cek user berdasarkan username
@@ -134,14 +135,47 @@ class PointController extends Controller
                 ], 400);
             }
 
+            $dataUri = $validated['foto_bukti'];
+
+// Pisahkan metadata dan data base64
+[$type, $data] = explode(';', $dataUri);
+[$mimeInfo, $base64Data] = explode(',', $data);
+
+// Tentukan ekstensi dari mime type
+$extension = '';
+if (Str::contains($type, 'image/jpeg')) {
+    $extension = 'jpg';
+} elseif (Str::contains($type, 'image/png')) {
+    $extension = 'png';
+} elseif (Str::contains($type, 'image/jpg')) {
+    $extension = 'jpg';
+} else {
+    // Fallback jika tidak dikenal
+    $extension = 'png';
+}
+
+// Generate nama unik untuk file
+$filename = 'foto_' . time() . '_' . Str::random(10) . '.' . $extension;
+
+// Decode base64
+$imageContent = base64_decode($base64Data);
+
+// Simpan ke storage/app/private/foto_bukti/
+$path = 'foto_bukti/' . $filename;
+Storage::disk('local')->put($path, $imageContent);
+
+// Simpan path jika ingin disimpan ke DB (opsional)
+$validated['foto_bukti_path'] = $path;
+
             // Simpan data checkin
             $checkin = CheckinLogs::create([
                 'user_id' => $user->id,
                 'point_qr_id' => $validated['point_qr_id'],
                 'latitude' => $validated['latitude'],
                 'longitude' => $validated['longitude'],
-                'foto' => null,
+                'foto_bukti' => $validated['foto_bukti_path'],
                 'waktu_checkin' => now(),
+                'ip_user' => $request->ip(),
             ]);
 
             return response()->json([

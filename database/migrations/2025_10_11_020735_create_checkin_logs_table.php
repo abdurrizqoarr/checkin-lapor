@@ -28,6 +28,8 @@ return new class extends Migration
             $table->decimal('latitude', 10, 8);
             $table->decimal('longitude', 11, 8);
 
+             $table->string('ip', 45);
+             
             // Bukti foto (opsional)
             $table->string('foto_bukti')->nullable();
 

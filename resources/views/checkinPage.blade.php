@@ -45,10 +45,10 @@
 
                 <!-- Kamera -->
                 <div>
-                    <label class="block text-sky-700 font-medium mb-2">Ambil Foto Wajah</label>
+                    <label class="block text-sky-700 font-medium mb-2">Ambil Foto</label>
                     <div class="flex flex-col items-center space-y-3">
                         <video id="cameraStream" autoplay playsinline
-                            class="rounded-lg border border-sky-300 w-full h-48 object-cover"></video>
+                            class="rounded-lg border border-sky-300 w-full h-80 object-cover"></video>
                         <canvas id="snapshotCanvas" class="hidden"></canvas>
                         <button type="button" id="btnCapture"
                             class="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition">
