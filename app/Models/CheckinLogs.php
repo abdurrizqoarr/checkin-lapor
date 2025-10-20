@@ -19,6 +19,7 @@ class CheckinLogs extends Model
         'foto_bukti',
         'latitude',
         'longitude',
+        'ip'
     ];
 
     protected $casts = [

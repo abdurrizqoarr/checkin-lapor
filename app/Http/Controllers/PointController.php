@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PointController extends Controller
 {
@@ -149,14 +151,14 @@ class PointController extends Controller
             // Pisahkan metadata dan data base64
             [$type, $data] = explode(';', $dataUri);
             [$mimeInfo, $base64Data] = explode(',', $data);
-
+            
             // Tentukan ekstensi dari mime type
             $extension = '';
-            if (Str::contains($type, 'image/jpeg')) {
+            if (Str::contains($type, 'jpeg')) {
                 $extension = 'jpg';
-            } elseif (Str::contains($type, 'image/png')) {
+            } elseif (Str::contains($type, 'png')) {
                 $extension = 'png';
-            } elseif (Str::contains($type, 'image/jpg')) {
+            } elseif (Str::contains($type, 'jpg')) {
                 $extension = 'jpg';
             } else {
                 // Fallback jika tidak dikenal
@@ -171,7 +173,7 @@ class PointController extends Controller
 
             // Simpan ke storage/app/private/foto_bukti/
             $path = 'foto_bukti/' . $filename;
-            Storage::disk('local')->put($path, $imageContent);
+            Storage::disk('public')->put($path, $imageContent);
 
             // Simpan path jika ingin disimpan ke DB (opsional)
             $validated['foto_bukti_path'] = $path;
@@ -184,7 +186,7 @@ class PointController extends Controller
                 'longitude' => $validated['longitude'],
                 'foto_bukti' => $validated['foto_bukti_path'],
                 'waktu_checkin' => now(),
-                'ip_user' => $request->ip(),
+                'ip' => $request->ip(),
             ]);
 
             return response()->json([
@@ -213,7 +215,7 @@ class PointController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan pada server.',
-                'error' => $e->getMessage(),
+                'error' => $e,
             ], 500);
         }
     }
