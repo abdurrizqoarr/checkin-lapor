@@ -48,7 +48,6 @@ class PointController extends Controller
                 'url' => $url,
                 'qrCode' => $qrCode,
             ]);
-
         } catch (\Exception $e) {
             // Log error agar bisa dicek di log file
             Log::error('Generate QR code failed: ' . $e->getMessage());
@@ -100,7 +99,17 @@ class PointController extends Controller
                 'point_qr_id' => 'required|exists:point_qr,id',
                 'latitude' => 'required|numeric|between:-90,90',
                 'longitude' => 'required|numeric|between:-180,180',
-                'foto_bukti' => 'required|string|regex:/^data:image\/(png|jpeg|jpg);base64,/',
+                'foto_bukti' => [
+                    'required',
+                    'string',
+                    'regex:/^data:image\/(png|jpeg|jpg);base64,/',
+                    function ($attribute, $value, $fail) {
+                        $size = (strlen(rtrim($value, '=')) * 3 / 4) / 1024 / 1024; // hitung MB
+                        if ($size > 2) {
+                            $fail('Ukuran foto terlalu besar (maksimal 2MB).');
+                        }
+                    },
+                ],
             ]);
 
             // Cek user berdasarkan username
@@ -137,35 +146,35 @@ class PointController extends Controller
 
             $dataUri = $validated['foto_bukti'];
 
-// Pisahkan metadata dan data base64
-[$type, $data] = explode(';', $dataUri);
-[$mimeInfo, $base64Data] = explode(',', $data);
+            // Pisahkan metadata dan data base64
+            [$type, $data] = explode(';', $dataUri);
+            [$mimeInfo, $base64Data] = explode(',', $data);
 
-// Tentukan ekstensi dari mime type
-$extension = '';
-if (Str::contains($type, 'image/jpeg')) {
-    $extension = 'jpg';
-} elseif (Str::contains($type, 'image/png')) {
-    $extension = 'png';
-} elseif (Str::contains($type, 'image/jpg')) {
-    $extension = 'jpg';
-} else {
-    // Fallback jika tidak dikenal
-    $extension = 'png';
-}
+            // Tentukan ekstensi dari mime type
+            $extension = '';
+            if (Str::contains($type, 'image/jpeg')) {
+                $extension = 'jpg';
+            } elseif (Str::contains($type, 'image/png')) {
+                $extension = 'png';
+            } elseif (Str::contains($type, 'image/jpg')) {
+                $extension = 'jpg';
+            } else {
+                // Fallback jika tidak dikenal
+                $extension = 'png';
+            }
 
-// Generate nama unik untuk file
-$filename = 'foto_' . time() . '_' . Str::random(10) . '.' . $extension;
+            // Generate nama unik untuk file
+            $filename = 'foto_' . time() . '_' . Str::random(10) . '.' . $extension;
 
-// Decode base64
-$imageContent = base64_decode($base64Data);
+            // Decode base64
+            $imageContent = base64_decode($base64Data);
 
-// Simpan ke storage/app/private/foto_bukti/
-$path = 'foto_bukti/' . $filename;
-Storage::disk('local')->put($path, $imageContent);
+            // Simpan ke storage/app/private/foto_bukti/
+            $path = 'foto_bukti/' . $filename;
+            Storage::disk('local')->put($path, $imageContent);
 
-// Simpan path jika ingin disimpan ke DB (opsional)
-$validated['foto_bukti_path'] = $path;
+            // Simpan path jika ingin disimpan ke DB (opsional)
+            $validated['foto_bukti_path'] = $path;
 
             // Simpan data checkin
             $checkin = CheckinLogs::create([
