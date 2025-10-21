@@ -22,6 +22,20 @@
             }
         }
     </style>
+
+    <script>
+        // Fungsi untuk membuka print saat halaman selesai dimuat
+        window.onload = function () {
+            setTimeout(function () {
+                window.print();
+            }, 500); // Sedikit delay untuk memastikan QR sudah dirender
+        };
+
+        // Menutup tab setelah proses print selesai (baik dicetak atau dibatalkan)
+        window.onafterprint = function () {
+            window.close();
+        };
+    </script>
 </head>
 
 <body class="bg-white text-gray-800 flex items-center justify-center min-h-screen">
@@ -40,12 +54,6 @@
             <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code {{ $point->nama_point }}"
                 class="w-64 h-64 border border-gray-200 shadow rounded-lg">
         </div>
-
-        <!-- Tombol cetak -->
-        <button onclick="window.print()"
-            class="no-print mt-6 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            Cetak QR Code
-        </button>
     </div>
 
 </body>
