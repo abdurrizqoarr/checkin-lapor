@@ -13,3 +13,7 @@ Route::get('/', [HomeContoller::class, 'loginPage'])->name('login');
 Route::post('/', [HomeContoller::class, 'handleLogin'])->name('handleLogin');
 Route::post('/logout', [HomeContoller::class, 'logout'])->name('logout');
 Route::get('/dashboard', [HomeContoller::class, 'dashboard'])->name('dashboard');
+
+
+Route::get('/login-admin', [AdminController::class, 'loginPageAdmin'])->name('login-admin');
+Route::post('/login-admin', [AdminController::class, 'handleLoginPageAdmin'])->name('handleLogin-admin');

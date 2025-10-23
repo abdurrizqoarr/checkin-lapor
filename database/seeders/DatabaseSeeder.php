@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PointQrSeeder::class,
             JadwalUserSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }
