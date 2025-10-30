@@ -16,6 +16,7 @@ class AdminUser extends Authenticatable
      *
      * @var list<string>
      */
+    protected $table = 'admin_users';
     protected $fillable = [
         'name',
         'username',

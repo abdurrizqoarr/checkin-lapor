@@ -14,13 +14,22 @@ class PointQrSeeder extends Seeder
     public function run(): void
     {
         $points = [
-            'Pintu Utama',
-            'Gudang Farmasi',
-            'Ruang Perawat',
-            'Laboratorium',
-            'Kantor Administrasi',
-            'Ruang Rapat',
-            'Parkiran Depan',
+            'GERBANG UTAMA',
+            'MCU',
+            'GEDUNG UTAMA',
+            'BERLIAN',
+            'OK',
+            'GIZI',
+            'IGD',
+            'RADIOLOGI',
+            'RUBY',
+            'SANITASI',
+            'PICU',
+            'SAFIR',
+            'MUTIARA',
+            'GUDANG FARMASI',
+            'NILAM',
+            'JENAZAH',
         ];
 
         foreach ($points as $nama) {
