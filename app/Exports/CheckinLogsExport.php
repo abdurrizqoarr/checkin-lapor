@@ -6,8 +6,10 @@ use App\Models\CheckinLogs;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class CheckinLogsExport implements FromCollection
+class CheckinLogsExport implements FromCollection, ShouldAutoSize, WithHeadings
 {
     protected $start;
 
@@ -61,8 +63,8 @@ class CheckinLogsExport implements FromCollection
             'ID',
             'User ID',
             'User Name',          // kolom baru dari join
-            'Point QR ID',
             'Lokasi',          // kolom baru dari join
+            'Point QR ID',
             'Waktu Check-in',
             'Foto Bukti (URL)',
             'Latitude',
