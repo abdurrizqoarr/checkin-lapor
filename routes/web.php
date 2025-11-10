@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ExportLogsControllers;
 use App\Http\Controllers\HomeContoller;
 use App\Http\Controllers\PointController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,9 @@ Route::get('/login-admin', [AdminController::class, 'loginPageAdmin'])->name('lo
 Route::post('/login-admin', [AdminController::class, 'handleLoginPageAdmin'])->name('handleLogin-admin');
 
 Route::get('/dashboard-admin', [AdminController::class, 'dashboardAdmin'])->name('dashboard-admin');
+
+Route::get('/dashboard-admin/export', [ExportLogsControllers::class, 'exportPage'])->name('export-logs');
+Route::post('/dashboard-admin/export', [ExportLogsControllers::class, 'handleExport'])->name('handle-export-logs');
 
 Route::get('/lokasi', [AdminController::class, 'lokasiQR'])->name('lokasi.page');
 Route::get('/add-lokasi', [AdminController::class, 'addLokasi'])->name('lokasi.create');
